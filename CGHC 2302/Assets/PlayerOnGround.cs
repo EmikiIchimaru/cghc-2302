@@ -7,7 +7,7 @@ public class PlayerOnGround : MonoBehaviour
         public bool isOnGround { get; private set; }
        
         [Header("Collider Settings")]
-        [SerializeField][Tooltip("Length of the ground-checking collider")] private float groundLength = 0.95f;
+        [SerializeField][Tooltip("Length of the ground-checking collider")] private float groundLength;
         [SerializeField][Tooltip("Distance between the ground-checking colliders")] private Vector3 colliderOffset;
 
         [Header("Layer Masks")]

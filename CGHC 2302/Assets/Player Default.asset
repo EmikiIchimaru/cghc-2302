@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8da912c77c5c3614eac4abb1fb911509, type: 3}
-  m_Name: Default
+  m_Name: Player Default
   m_EditorClassIdentifier: 
   presetName: Default Settings
-  maxSpeed: 10
-  accel: 50
-  decel: 50
-  turnSpeed: 50
-  jumpHeight: 3
+  maxSpeed: 15
+  accel: 100
+  decel: 100
+  turnSpeed: 100
+  jumpHeight: 5
   timeToApex: 0.3
   upGravityMulti: 1
-  downGravityMulti: 5.23
+  downGravityMulti: 1
   jumpntGravityMulti: 5
-  airAccel: 50
-  airDecel: 50
-  airTurnSpeed: 50
+  airAccel: 100
+  airDecel: 100
+  airTurnSpeed: 100
   variableJH: 0
   maxAirJumps: 1
   coyoteTime: 0.3
-  jumpBuffer: 0
-  terminalVelocity: 10
+  jumpBuffer: 0.3
+  terminalVelocity: 20
