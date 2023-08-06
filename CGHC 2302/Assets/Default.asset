@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   presetName: Default Settings
   maxSpeed: 10
-  accel: 80
-  decel: 80
-  turnSpeed: 80
-  jumpHeight: 5
-  timeToApex: 0.4
-  upGravityX: 1
-  downGravityX: 3
-  jumpntGravityX: 5
-  airAccel: 80
-  airDecel: 80
-  airTurnSpeed: 80
-  variableJH: 1
-  maxAirJumps: 0
-  coyoteTime: 0.5
-  jumpBuffer: 0.5
+  accel: 50
+  decel: 50
+  turnSpeed: 50
+  jumpHeight: 3
+  timeToApex: 0.3
+  upGravityMulti: 1
+  downGravityMulti: 5.23
+  jumpntGravityMulti: 5
+  airAccel: 50
+  airDecel: 50
+  airTurnSpeed: 50
+  variableJH: 0
+  maxAirJumps: 1
+  coyoteTime: 0.3
+  jumpBuffer: 0
   terminalVelocity: 10

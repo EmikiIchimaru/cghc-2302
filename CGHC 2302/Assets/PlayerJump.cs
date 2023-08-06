@@ -16,21 +16,17 @@ public class PlayerJump : MonoBehaviour
 
     private float coyoteTimeCounter = 0f;
     private float jumpBufferCounter;
-    private float defaultGravityX;
+    private float defaultGravityMulti;
 
-    public float gravityX;
+    public float gravityMulti;
     public float jumpSpeed;
     public bool canJumpAgain = false;
-
-   /*  public float upGravityX;
-    public float downGravityX;
-    public float jumpntGravityX; */
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         ground = GetComponent<PlayerOnGround>();
-        defaultGravityX = 1f;
+        defaultGravityMulti = 1f;
     }
 
     void Update()
@@ -68,6 +64,8 @@ public class PlayerJump : MonoBehaviour
             //Reset it when we touch the ground, or jump
             coyoteTimeCounter = 0;
         }
+
+        
     }
 
     void FixedUpdate()
@@ -89,26 +87,13 @@ public class PlayerJump : MonoBehaviour
         calculateGravity();
     }
 
-    private void GetJumpInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumpInput = true;
-            isPressingJump = true;
-            //Debug.Log("iscont?");
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isPressingJump = false;
-        }
-    }
+   
 
     private void SetPhysics()
     {
         //Determine the character's gravity scale, using the stats provided. Multiply it by a gravMultiplier, used later
         Vector2 newGravity = new Vector2(0, (-2 * stats.jumpHeight) / (stats.timeToApex * stats.timeToApex));
-        rb.gravityScale = (newGravity.y / Physics2D.gravity.y) * gravityX;
+        rb.gravityScale = (newGravity.y / Physics2D.gravity.y) * gravityMulti;
     }
 
     private void calculateGravity()
@@ -121,44 +106,44 @@ public class PlayerJump : MonoBehaviour
             if (isOnGround)
             {
                 //Don't change it if Kit is standing on something (such as a moving platform)
-                gravityX = defaultGravityX;
+                gravityMulti = defaultGravityMulti;
             }
             else
             {
                 //If we're using variable jump height...)
                 if (stats.variableJH)
                 {
-                    gravityX = (isPressingJump && isCurrentlyJumping) ? stats.upGravityX : stats.jumpntGravityX;
+                    gravityMulti = (isPressingJump && isCurrentlyJumping) ? stats.upGravityMulti : stats.jumpntGravityMulti;
                     /* //Apply upward multiplier if player is rising and holding jump
                     if (pressingJump && currentlyJumping)
                     {
-                        gravityX = upGravityX;
+                        gravityMulti = upGravityMulti;
                     }
                     //But apply a special downward multiplier if the player lets go of jump
                     else
                     {
-                        gravityX = jumpntGravityX;
+                        gravityMulti = jumpntGravityMulti;
                     } */
                 }
                 else
                 {
-                    gravityX = stats.upGravityX;
+                    gravityMulti = stats.upGravityMulti;
                 }
             }
         }
         //Else if kit is going down...
         else if (rb.velocity.y < -0.01f) 
         {
-            gravityX = (isOnGround) ? defaultGravityX : stats.downGravityX;
+            gravityMulti = (isOnGround) ? defaultGravityMulti : stats.downGravityMulti;
             /* if (isOnGround)
             //Don't change it if Kit is stood on something (such as a moving platform)
             {
-                gravityX = defaultGravityX;
+                gravityMulti = defaultGravityMulti;
             }
             else
             {
                 //Otherwise, apply the downward gravity multiplier as Kit comes back to Earth
-                gravityX = downGravityX;
+                gravityMulti = downGravityMulti;
             } */
         }
         //Else not moving vertically at all
@@ -169,7 +154,7 @@ public class PlayerJump : MonoBehaviour
                 isCurrentlyJumping = false;
             }
 
-            gravityX = defaultGravityX;
+            gravityMulti = defaultGravityMulti;
         }
 
         //Set the character's Rigidbody's velocity
@@ -182,27 +167,32 @@ public class PlayerJump : MonoBehaviour
         
         if (isOnGround || (coyoteTimeCounter > 0.03f && coyoteTimeCounter < stats.coyoteTime) || canJumpAgain)
         {
-            Debug.Log("jump!");
+            //Debug.Log("jump!");
 
             isJumpInput = false;
             jumpBufferCounter = 0;
             coyoteTimeCounter = 0;
 
-            canJumpAgain = (stats.maxAirJumps == 1 && canJumpAgain == false);
+            canJumpAgain = isOnGround || (stats.maxAirJumps == 1 && canJumpAgain == false);
 
             jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb.gravityScale * stats.jumpHeight);
 
             if (velocity.y > 0f)
             {
+                //Debug.Log("velocity greater than 0");
                 jumpSpeed = Mathf.Max(jumpSpeed - velocity.y, 0f);
             }
             else if (velocity.y < 0f)
             {
+                //Debug.Log("velocity less than 0");
                 jumpSpeed += Mathf.Abs(rb.velocity.y);
             }
 
             //Apply the new jumpSpeed to the velocity. It will be sent to the Rigidbody in FixedUpdate;
+            //Debug.Log("velocity = " + velocity.y.ToString());
+            //Debug.Log("js = " + jumpSpeed.ToString());
             velocity.y += jumpSpeed;
+            //Debug.Log("new velocity = " + velocity.y.ToString());
             isCurrentlyJumping = true;
             
         }
@@ -210,6 +200,21 @@ public class PlayerJump : MonoBehaviour
         {
             //If we don't have a jump buffer, then turn off desiredJump immediately after hitting jumping
             isJumpInput = false;
+        }
+    }
+
+    private void GetJumpInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumpInput = true;
+            isPressingJump = true;
+            //Debug.Log("iscont?");
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isPressingJump = false;
         }
     }
 }

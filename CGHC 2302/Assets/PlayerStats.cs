@@ -17,9 +17,9 @@ public class PlayerStats : ScriptableObject
     public float jumpHeight;
     public float timeToApex;
 
-    public float upGravityX;
-    public float downGravityX;
-    public float jumpntGravityX;
+    public float upGravityMulti;
+    public float downGravityMulti;
+    public float jumpntGravityMulti;
 
     public float airAccel;
     public float airDecel;
