@@ -173,10 +173,14 @@ public class PlayerJump : MonoBehaviour
             jumpBufferCounter = 0;
             coyoteTimeCounter = 0;
 
-            canJumpAgain = isOnGround || (stats.maxAirJumps == 1 && canJumpAgain == false);
+            canJumpAgain = stats.maxAirJumps == 1 && ( isOnGround ||  canJumpAgain == false);
+            Vector2 newGravity = new Vector2(0, (-2 * stats.jumpHeight) / (stats.timeToApex * stats.timeToApex));
+            float defaultgravscale = (newGravity.y / Physics2D.gravity.y);
+            
 
-            jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb.gravityScale * stats.jumpHeight);
-
+            //jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb.gravityScale * stats.jumpHeight);
+            jumpSpeed = Mathf.Sqrt(-2f * Physics2D.gravity.y * defaultgravscale * stats.jumpHeight);
+            Debug.Log("js1 = " + jumpSpeed.ToString());
             if (velocity.y > 0f)
             {
                 //Debug.Log("velocity greater than 0");
@@ -189,10 +193,16 @@ public class PlayerJump : MonoBehaviour
             }
 
             //Apply the new jumpSpeed to the velocity. It will be sent to the Rigidbody in FixedUpdate;
-            //Debug.Log("velocity = " + velocity.y.ToString());
-            //Debug.Log("js = " + jumpSpeed.ToString());
+            Debug.Log("velocity = " + velocity.y.ToString());
+            Debug.Log("js2 = " + jumpSpeed.ToString());
             velocity.y += jumpSpeed;
-            //Debug.Log("new velocity = " + velocity.y.ToString());
+            //velocity.y = Mathf.Sqrt(-2f * Physics2D.gravity.y * rb.gravityScale * stats.jumpHeight);
+            //Debug.Log("new physics = " + Physics2D.gravity.y.ToString());
+            Debug.Log("new gravity = " + rb.gravityScale.ToString());
+            //Debug.Log("new jumpheight = " + stats.jumpHeight.ToString());
+
+
+            Debug.Log("new velocity = " + velocity.y.ToString());
             isCurrentlyJumping = true;
             
         }
